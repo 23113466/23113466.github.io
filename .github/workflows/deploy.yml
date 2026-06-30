@@ -1,0 +1,26 @@
+name: Build and Deploy
+on:
+  push:
+    branches:
+      - main  # 当代码推送到 main 分支时触发
+permissions:
+  contents: write # 赋予写入权限，用于部署
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+
+      # 这里是构建步骤，根据你的工具替换。
+      # 如果你使用纯静态文件或 Jekyll（GitHub 原生支持），可以移除或调整此步骤。
+      - name: Install and Build 🔧
+        run: |
+          npm ci
+          npm run build
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: build # ⚠️ 关键：指定要部署的文件夹，如果你的构建输出在 'public' 或根目录 '.', 请修改此处
+          branch: gh-pages # 部署的目标分支，可以保持默认或修改
